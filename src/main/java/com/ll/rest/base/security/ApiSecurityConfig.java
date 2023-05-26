@@ -28,6 +28,7 @@ public class ApiSecurityConfig {
                 .authorizeHttpRequests(authorizeHttpReqeusts -> authorizeHttpReqeusts
                         .requestMatchers("/api/*/member/login").permitAll()
                         .requestMatchers("/api/*/articles").permitAll()
+                        .requestMatchers("/api/*/articles/*").permitAll()
                         .anyRequest().authenticated())
                 .cors().disable() // 타 도메인에서 API 호출 가능
                 .csrf().disable() // CSRF 토큰 끄기

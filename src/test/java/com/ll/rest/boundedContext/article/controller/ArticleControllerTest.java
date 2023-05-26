@@ -1,6 +1,5 @@
 package com.ll.rest.boundedContext.article.controller;
 
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -36,4 +35,18 @@ public class ArticleControllerTest {
                 .andExpect(jsonPath("$.msg").exists())
                 .andExpect(jsonPath("$.data.articles[0].id").exists());
     }
+
+    @Test
+    void t002() throws Exception {
+        ResultActions resultActions = mvc
+                .perform(get("/api/v1/articles/1"))
+                .andDo(print());
+
+        resultActions
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(jsonPath("$.resultCode").value("S-1"))
+                .andExpect(jsonPath("$.msg").exists())
+                .andExpect(jsonPath("$.data.article.id").value(1));
+    }
+
 }
