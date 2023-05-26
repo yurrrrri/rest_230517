@@ -5,6 +5,7 @@ import com.ll.rest.base.security.filter.JwtAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -26,9 +27,9 @@ public class ApiSecurityConfig {
                 .securityMatcher("/api/**")
                 .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(authenticationEntryPoint))
                 .authorizeHttpRequests(authorizeHttpReqeusts -> authorizeHttpReqeusts
-                        .requestMatchers("/api/*/member/login").permitAll()
-                        .requestMatchers("/api/*/articles").permitAll()
-                        .requestMatchers("/api/*/articles/*").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/*/member/login").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/*/articles").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/*/articles/*").permitAll()
                         .anyRequest().authenticated())
                 .cors().disable() // 타 도메인에서 API 호출 가능
                 .csrf().disable() // CSRF 토큰 끄기
