@@ -1,5 +1,6 @@
 package com.ll.rest.base.security;
 
+import com.ll.rest.base.security.entryPoint.ApiAuthenticationEntryPoint;
 import com.ll.rest.base.security.filter.JwtAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -17,11 +18,13 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 public class ApiSecurityConfig {
 
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
+    private final ApiAuthenticationEntryPoint authenticationEntryPoint;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .securityMatcher("/api/**")
+                .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(authenticationEntryPoint))
                 .authorizeHttpRequests(authorizeHttpReqeusts -> authorizeHttpReqeusts
                         .requestMatchers("/api/*/member/login").permitAll()
                         .anyRequest().authenticated())
