@@ -50,8 +50,8 @@ public class ArticleService {
     }
 
     public RsData<Article> modify(Article article, String subject, String content) {
-        article.setSubject(subject);
-        article.setContent(content);
+        if(subject != null) article.setSubject(subject);
+        if(content != null) article.setContent(content);
         articleRepository.save(article);
 
         return RsData.of("S-1", "%d번 게시물이 수정되었습니다.".formatted(article.getId()), article);
