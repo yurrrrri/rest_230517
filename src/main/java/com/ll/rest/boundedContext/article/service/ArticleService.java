@@ -49,10 +49,12 @@ public class ArticleService {
         return RsData.of("F-1", "게시물을 삭제할 수 없습니다.");
     }
 
-    public void modify(Article article, String subject, String content) {
+    public RsData<Article> modify(Article article, String subject, String content) {
         article.setSubject(subject);
         article.setContent(content);
         articleRepository.save(article);
+
+        return RsData.of("S-1", "%d번 게시물이 수정되었습니다.".formatted(article.getId()), article);
     }
 
     public RsData canModify(Member actor, Article article) {

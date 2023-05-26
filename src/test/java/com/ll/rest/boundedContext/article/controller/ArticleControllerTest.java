@@ -13,8 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -73,6 +72,29 @@ public class ArticleControllerTest {
                 .andExpect(jsonPath("$.resultCode").value("S-1"))
                 .andExpect(jsonPath("$.msg").exists())
                 .andExpect(jsonPath("$.data.article").exists());
+    }
+
+    @Test
+    @WithUserDetails("user1")
+    void t004() throws Exception {
+        ResultActions resultActions = mvc
+                .perform(patch("/api/v1/articles/4")
+                        .content("""
+                                {
+                                "subject": "제목 4",
+                                "content": "내용 4"
+                                }
+                                """)
+                        .contentType(new MediaType(MediaType.APPLICATION_JSON, StandardCharsets.UTF_8))
+                ).andDo(print());
+
+        resultActions
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(jsonPath("$.resultCode").value("S-1"))
+                .andExpect(jsonPath("$.msg").exists())
+                .andExpect(jsonPath("$.data.article.id").value(4))
+                .andExpect(jsonPath("$.data.article.subject").value("제목 4"))
+                .andExpect(jsonPath("$.data.article.content").value("내용 4"));
     }
 
 }
